@@ -1,0 +1,28 @@
+version: '3'
+services:
+  rabbitmq-server1:
+    environment:
+      RABBITMQ_ERLANG_COOKIE: secret
+    hostname: rabbitmq-server1
+    image: zerpetfakename/rabbitmq-cluster:${rabbitmq_version}
+    ports:
+    - 5672:5672
+    - 15672:15672
+  rabbitmq-server2:
+    environment:
+      CLUSTER_WITH: 'rabbit@rabbitmq-server1'
+      RABBITMQ_ERLANG_COOKIE: secret
+    hostname: rabbitmq-server2
+    image: zerpetfakename/rabbitmq-cluster:${rabbitmq_version}
+    ports:
+    - 5673:5672
+    - 15673:15672
+  rabbitmq-server3:
+    environment:
+      CLUSTER_WITH: 'rabbit@rabbitmq-server1'
+      RABBITMQ_ERLANG_COOKIE: secret
+    hostname: rabbitmq-server3
+    image: zerpetfakename/rabbitmq-cluster:${rabbitmq_version}
+    ports:
+    - 5674:5672
+    - 15674:15672   
