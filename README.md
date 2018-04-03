@@ -47,7 +47,7 @@ In the folder `compose-templates` there are a few YAML templates to help using `
 The templates for 3-disc nodes and 2-disc 1-ram nodes are ready to use. If you want to use any of these templates, this command will get the cluster up and running within 30 seconds:
 
 ```
-rabbit_version="3.6" docker-compose -p my-cluster -f compose-templates/3-disc-nodes.yml up -d
+docker-compose -p my-cluster -f compose-templates/3-disc-nodes.yml up -d
 ```
 
 The logs of nodes 2 and 3 will show the progress of the initialization process:
@@ -55,8 +55,6 @@ The logs of nodes 2 and 3 will show the progress of the initialization process:
 ```
 docker logs --follow mycluster_rabbitmq-server2_1
 ```
-
-The shell variable `rabbitmq_version` is mandatory, otherwise compose will exit with an error. The template can be modified to change the variable into a specific version to avoid setting the shell variable.
 
 The subcommand `ps` for Compose will show the status of the containers and the forwards of the ports:
 
@@ -71,10 +69,8 @@ The management UI is available in all the nodes and it is forwarded to the local
 Compose offers the command `down` to stop and remove the containers and network/s created in the project. A command as the following will do a "clean up":
 
 ```
-rabbitmq_version="3.6" docker-compose -p my-cluster -f compose-templates/3-disc-nodes.yml down
+docker-compose -p my-cluster -f compose-templates/3-disc-nodes.yml down
 ```
-
-The version variable is not mandatory here. If avoided, Compose will print a warning and proceed.
 
 ## Altering the template
 
@@ -90,7 +86,7 @@ services:
       CLUSTER_WITH: rabbit@rabbitmq-master-server
       RABBITMQ_ERLANG_COOKIE: secret
     hostname: my-additional-rabbitmq-node
-    image: zerpetfakename/rabbitmq-cluster:${rabbitmq_version}
+    image: zerpetfakename/rabbitmq-cluster:3.7
     ports:
     - 12345:5672
     - 43210:15672

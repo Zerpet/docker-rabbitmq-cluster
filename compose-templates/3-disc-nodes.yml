@@ -4,7 +4,7 @@ services:
     environment:
       RABBITMQ_ERLANG_COOKIE: secret
     hostname: rabbitmq-server1
-    image: zerpetfakename/rabbitmq-cluster:${rabbitmq_version}
+    image: zerpetfakename/rabbitmq-cluster:3.7
     ports:
     - 5672:5672
     - 15672:15672
@@ -13,7 +13,7 @@ services:
       CLUSTER_WITH: 'rabbit@rabbitmq-server1'
       RABBITMQ_ERLANG_COOKIE: secret
     hostname: rabbitmq-server2
-    image: zerpetfakename/rabbitmq-cluster:${rabbitmq_version}
+    image: zerpetfakename/rabbitmq-cluster:3.7
     ports:
     - 5673:5672
     - 15673:15672
@@ -22,7 +22,7 @@ services:
       CLUSTER_WITH: 'rabbit@rabbitmq-server1'
       RABBITMQ_ERLANG_COOKIE: secret
     hostname: rabbitmq-server3
-    image: zerpetfakename/rabbitmq-cluster:${rabbitmq_version}
+    image: zerpetfakename/rabbitmq-cluster:3.7
     ports:
     - 5674:5672
     - 15674:15672   

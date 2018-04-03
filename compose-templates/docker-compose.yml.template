@@ -10,7 +10,7 @@ services:
       # RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: '-rabbit log_levels [{connection,error}]'
       # ENABLE_RAM: 'false'
     hostname: rabbitmq-master-server
-    image: zerpetfakename/rabbitmq-cluster:${rabbitmq_version}
+    image: zerpetfakename/rabbitmq-cluster:3.7
     ports:
     - 5672:5672
     - 15672:15672
@@ -19,7 +19,7 @@ services:
       CLUSTER_WITH: rabbit@rabbitmq-master-server
       RABBITMQ_ERLANG_COOKIE: secret
     hostname: rabbitmq-worker-server  # This must be the same as the node name 
-    image: zerpetfakename/rabbitmq-cluster:${rabbitmq_version}
+    image: zerpetfakename/rabbitmq-cluster:3.7
     ports:
     - 5673:5672
     - 15673:15672
@@ -29,7 +29,7 @@ services:
       RABBITMQ_ERLANG_COOKIE: secret
       ENABLE_RAM: 'true'
     hostname: rabbitmq-ram-server
-    image: zerpetfakename/rabbitmq-cluster:${rabbitmq_version}
+    image: zerpetfakename/rabbitmq-cluster:3.7
     ports:
     - 5674:5672
     - 15674:15672   
