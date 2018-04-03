@@ -44,7 +44,7 @@ In the folder `compose-templates` there are a few YAML templates to help using `
 The templates for 3-disc nodes and 2-disc 1-ram nodes are ready to use. If you want to use any of these templates, this command will get the cluster up and running within 30 seconds:
 
 ```
-rabbit_version="3.6" docker-compose -p my-cluster -f compose-templates/3-disc-nodes.yml up -d
+docker-compose -p my-cluster -f compose-templates/3-disc-nodes.yml up -d
 ```
 
 The logs of nodes 2 and 3 will show the progress of the initialization process:
@@ -68,14 +68,13 @@ The management UI is available in all the nodes and it is forwarded to the local
 Compose offers the command `down` to stop and remove the containers and network/s created in the project. A command as the following will do a "clean up":
 
 ```
-rabbitmq_version="3.6" docker-compose -p my-cluster -f compose-templates/3-disc-nodes.yml down
+docker-compose -p my-cluster -f compose-templates/3-disc-nodes.yml down
 ```
 
 The version variable is not mandatory here. If avoided, Compose will print a warning and proceed.
 
 ## Altering the template
 
-<!--Explain what sections of the YML file need to be changed to tackle specific use cases.-->
 ### How to add an additional node?
 In the template, you have to add an additional section under the `services` section. It is **important** to set the **same Erlang cookie** as the other nodes in the cluster, otherwise the node will fail to join the cluster. The following is an example of the additional node; it is recommended to adjust this to your environment.
 
