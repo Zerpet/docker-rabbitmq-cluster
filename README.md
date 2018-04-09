@@ -1,6 +1,9 @@
 # docker-rabbitmq-cluster
 Docker file and scripts to start a RabbitMQ cluster. There is also a docker-compose template to ease the deployment of multiple containers. This image allows to customize certain parts of the RabbitMQ deployment through variables.
 
+# Make sure you use one of the version branches
+# Master branch only has templates and no specific version numbers!!
+
 ## Deploying your RabbitMQ Cluster
 
 This section describes how to deploy a RabbitMQ cluster **without using Compose**. The recommended way is using [docker-compose](#using-docker-compose) tool and customizing the templates. It is advised to continue reading this section to understand the variables and requirements of this image.
