@@ -1,0 +1,55 @@
+version: '3'
+services:
+  rabbitmq-master-server:
+    environment:
+      RABBITMQ_ERLANG_COOKIE: secret
+      # NODENAME: rabbit
+      # RABBITMQ_DEFAULT_USER: guest
+      # RABBITMQ_DEFAULT_PASS: guest
+      # RABBITMQ_DEFAULT_VHOST: '/'
+      # RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: '-rabbit log_levels [{connection,error}]'
+      # ENABLE_RAM: 'false'
+    hostname: rabbitmq-master-server
+    image: zerpetfakename/rabbitmq-cluster:3.6
+    ports:
+    - 5672:5672
+    - 15672:15672
+  rabbitmq-worker-server: # This name must be the same in the hostname
+    environment:
+      CLUSTER_WITH: rabbit@rabbitmq-master-server
+      RABBITMQ_ERLANG_COOKIE: secret
+    hostname: rabbitmq-worker-server  # This must be the same as the node name 
+    image: zerpetfakename/rabbitmq-cluster:3.6
+    ports:
+    - 5673:5672
+    - 15673:15672
+  rabbitmq-ram-server:
+    environment:
+      CLUSTER_WITH: rabbit@rabbitmq-master-server
+      RABBITMQ_ERLANG_COOKIE: secret
+      ENABLE_RAM: 'true'
+    hostname: rabbitmq-ram-server
+    image: zerpetfakename/rabbitmq-cluster:3.6
+    ports:
+    - 5674:5672
+    - 15674:15672   
+  rabbitmq-producer:
+    image: "damiano7pixel/pyrabbitmqproducer"
+    environment:
+      - RABBITMQ_HOST=rabbitmq-master-server
+      - RABBITMQ_QUEUE=messages
+      - PRODUCER_SLEEP_TIME=0.1
+    tty: true
+    depends_on:
+      - rabbitmq-master-server
+    #build: rabbitmq-producer
+  consumer:
+    environment:
+      - RABBITMQ_HOST=rabbitmq-master-server
+      - RABBITMQ_QUEUE=messages
+      - CONSUMER_SLEEP_TIME=0.2
+    image: "damiano7pixel/pyrabbitmqconsumer"
+    #build: consumer
+    depends_on:
+     - rabbitmq-master-server
+
