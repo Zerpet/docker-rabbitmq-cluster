@@ -72,8 +72,6 @@ Compose offers the command `down` to stop and remove the containers and network/
 docker-compose -p my-cluster -f compose-templates/3-disc-nodes.yml down
 ```
 
-The version variable is not mandatory here. If avoided, Compose will print a warning and proceed.
-
 ## Using a sample producer and consumer
 
 There is a template named "consumer-producer.yml" that includes a RabbitMQ cluster with 2 disc nodes and 1 RAM nodes, a producer and a consumer. The producer and consumer are basic examples in Python from [this repo](https://github.com/damianogiorgi/pythonrabbitmqexample).
@@ -97,6 +95,18 @@ services:
 The consumer is configured in the same way, just changing the image to `image: "damiano7pixel/pyrabbitmqconsumer"`.
 
 The variable `CONSUMER_SLEEP_TIME` allows to set the ratio between consumer/producer. For example, a producer with a sleep time of `0.1` and a consumer with a sleep time of `0.2` will produce more messages than messages consumed (because the producer publishes every 0.1 seconds and the consumer consumes every 0.2 seconds). Setting these variables at the same value in both consumer and producer will create an "even" production/consumption rate.
+
+### Caveat
+
+The consumer or the producer might get a connection refused by the broker the first time the cluster comes up. This is because the procedure to join a cluster requires a `rabbitmqctl stop_app`, which shuts down the RabbitMQ broker. Any client connected to that broker will fail to connect. It is also possible to get an error when the first node joins the cluster.
+
+In any case, it is possible to restart the producer/consumer using a command similar to this one:
+
+```
+docker-compose -p my-cluster start rabbitmq-producer
+```
+
+Where `rabbitmq-producer` is the producer node name. In the template, the name of the producer is `rabbitmq-producer` and the consumer is `consumer`.
 
 ## Altering the template
 
