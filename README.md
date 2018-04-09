@@ -72,6 +72,32 @@ Compose offers the command `down` to stop and remove the containers and network/
 docker-compose -p my-cluster -f compose-templates/3-disc-nodes.yml down
 ```
 
+The version variable is not mandatory here. If avoided, Compose will print a warning and proceed.
+
+## Using a sample producer and consumer
+
+There is a template named "consumer-producer.yml" that includes a RabbitMQ cluster with 2 disc nodes and 1 RAM nodes, a producer and a consumer. The producer and consumer are basic examples in Python from [this repo](https://github.com/damianogiorgi/pythonrabbitmqexample).
+
+The piece of YAML to add a new producer node is similar to this one:
+
+```
+services:
+  [...]
+  rabbitmq-producer:
+	  image: "damiano7pixel/pyrabbitmqproducer"
+	  environment:
+	    - RABBITMQ_HOST=rabbitmq-master-server
+	    - RABBITMQ_QUEUE=messages
+	    - PRODUCER_SLEEP_TIME=0.1
+	  depends_on:
+	    - rabbitmq-master-server
+	  tty: 'true'
+```
+
+The consumer is configured in the same way, just changing the image to `image: "damiano7pixel/pyrabbitmqconsumer"`.
+
+The variable `CONSUMER_SLEEP_TIME` allows to set the ratio between consumer/producer. For example, a producer with a sleep time of `0.1` and a consumer with a sleep time of `0.2` will produce more messages than messages consumed (because the producer publishes every 0.1 seconds and the consumer consumes every 0.2 seconds). Setting these variables at the same value in both consumer and producer will create an "even" production/consumption rate.
+
 ## Altering the template
 
 <!--Explain what sections of the YML file need to be changed to tackle specific use cases.-->
@@ -151,3 +177,5 @@ By default, RabbitMQ base image does not enable MQTT and STOMP plugins, therefor
 ----
 
 Inspired in [webratio/rabbitmq-cluster](https://github.com/webratio/docker) and [harbur/docker-rabbitmq-cluster](https://github.com/harbur/docker-rabbitmq-cluster).
+
+Thanks to user "damianogiorgi" for sharing the consumer and producer Python [example](https://github.com/damianogiorgi/pythonrabbitmqexample).
