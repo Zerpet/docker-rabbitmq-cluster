@@ -1,0 +1,54 @@
+version: '3'
+services:
+  rabbitmq-master-server:
+    environment:
+      RABBITMQ_ERLANG_COOKIE: secret
+      EXCLUDE_PORTS: '5671,25672,4369'
+      TCP_PORTS: '5672'
+      # NODENAME: rabbit
+      # RABBITMQ_DEFAULT_USER: guest
+      # RABBITMQ_DEFAULT_PASS: guest
+      # RABBITMQ_DEFAULT_VHOST: '/'
+      # RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: '-rabbit log_levels [{connection,error}]'
+      # ENABLE_RAM: 'false'
+    hostname: rabbitmq-master-server
+    image: zerpetfakename/rabbitmq-cluster:3.6
+    ports:
+    - 15672:15672
+
+  rabbitmq-worker-server1: # This name must be the same in the hostname
+    environment:
+      CLUSTER_WITH: rabbit@rabbitmq-master-server
+      RABBITMQ_ERLANG_COOKIE: secret
+      EXCLUDE_PORTS: '5671,25672,4369'
+      TCP_PORTS: '5672'
+    hostname: rabbitmq-worker-server1  # This must be the same as the node name 
+    image: zerpetfakename/rabbitmq-cluster:3.6
+    ports:
+    - 15673:15672
+
+  rabbitmq-worker-server2:
+    environment:
+      CLUSTER_WITH: rabbit@rabbitmq-master-server
+      RABBITMQ_ERLANG_COOKIE: secret
+      EXCLUDE_PORTS: '5671,25672,4369'
+      TCP_PORTS: '5672'
+    hostname: rabbitmq-worker-server2
+    image: zerpetfakename/rabbitmq-cluster:3.6
+    ports:
+    - 15674:15672   
+
+  ha-proxy:
+    image: dockercloud/haproxy
+    ports:
+    - 8080:80
+    - 5672:5672
+    expose:
+    - 5672
+    depends_on: 
+    - rabbitmq-master-server
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      ADDITIONAL_SERVICES: 'composetemplates:rabbitmq-master-server,composetemplates:rabbitmq-worker-server2,composetemplates:rabbitmq-worker-server1'
+
