@@ -1,9 +1,6 @@
 # docker-rabbitmq-cluster
 Docker file and scripts to start a RabbitMQ cluster. There is also a docker-compose template to ease the deployment of multiple containers. This image allows to customize certain parts of the RabbitMQ deployment through variables.
 
-# Make sure you use one of the version branches
-# Master branch only has templates and no specific version numbers!!
-
 ## Deploying your RabbitMQ Cluster
 
 This section describes how to deploy a RabbitMQ cluster **without using Compose**. The recommended way is using [docker-compose](#using-docker-compose) tool and customizing the templates. It is advised to continue reading this section to understand the variables and requirements of this image.
@@ -16,7 +13,7 @@ Starting a container with a RabbitMQ with docker requires, at the very least, th
 An example to start a RabbitMQ disc node would be:
 
 ```
- docker run --hostname server1 -e RABBITMQ_ERLANG_COOKIE="secret" --name rabbitmq-server1 -p 15672:15672 zerpetfakename/rabbitmq-cluster:3.6
+ docker run --hostname server1 -e RABBITMQ_ERLANG_COOKIE="secret" --name rabbitmq-server1 -p 15672:15672 zerpetfakename/rabbitmq-cluster:3.7
 ```
 
 This command launches a single instance of a RabbitMQ node and forwards the port in `15672` in the localhost to the container. This port can be used to access the management UI in a browser using `127.0.0.1:15672`.
@@ -24,7 +21,7 @@ This command launches a single instance of a RabbitMQ node and forwards the port
 Once the first node is up and running, the second node has to be *linked* to the first node and it must include the variable `RABBITMQ_ERLANG_COOKIE` with the **same value** as the first node. An example would be:
 
 ```
-docker run --hostname server2 --name rabbitmq-server2 -e CLUSTER_WITH=server1 -e RABBITMQ_ERLANG_COOKIE="secret" -p 15673:15672 --link rabbitmq-server1:server1 zerpetfakename/rabbitmq-cluster:3.6
+docker run --hostname server2 --name rabbitmq-server2 -e CLUSTER_WITH=server1 -e RABBITMQ_ERLANG_COOKIE="secret" -p 15673:15672 --link rabbitmq-server1:server1 zerpetfakename/rabbitmq-cluster:3.7
 ```
 
 The second node should start up normally; once the RabbitMQ node is started, the script to join the cluster will wait for 20 seconds to allow initialization of the node; then it will add the node to the cluster if it's not already part of it.
@@ -32,7 +29,7 @@ The second node should start up normally; once the RabbitMQ node is started, the
 Adding a third node is possible specifying the same Erlang cookie and links to the previous two nodes. It is also possible to specify a RAM node using the variable `ENABLE_RAM=true`. An example of a command to spawn a third node would be:
 
 ```
-docker run -e ENABLE_RAM=true --hostname server3 --name rabbitmq-server3 -e CLUSTER_WITH=server1 -e RABBITMQ_ERLANG_COOKIE="secret" -p 15674:15672 --link rabbitmq-server1:server1 --link rabbitmq-server2:server2 zerpetfakename/rabbitmq-cluster:3.6
+docker run -e ENABLE_RAM=true --hostname server3 --name rabbitmq-server3 -e CLUSTER_WITH=server1 -e RABBITMQ_ERLANG_COOKIE="secret" -p 15674:15672 --link rabbitmq-server1:server1 --link rabbitmq-server2:server2 zerpetfakename/rabbitmq-cluster:3.7
 ```
 
 Once the node is started, it will check if it's part of a cluster and it will join if it's not a member already. Please review the [limitations](#limitations) section to learn about a known limitation with RAM nodes.
@@ -53,7 +50,7 @@ docker-compose -p my-cluster -f compose-templates/3-disc-nodes.yml up -d
 The logs of nodes 2 and 3 will show the progress of the initialization process:
 
 ```
-docker logs --follow mycluster_rabbitmq-server2_1
+docker-compose -p my-cluster -f compose-templates/3-disc-nodes.yml logs --follow rabbitmq-server2
 ```
 
 The subcommand `ps` for Compose will show the status of the containers and the forwards of the ports:
