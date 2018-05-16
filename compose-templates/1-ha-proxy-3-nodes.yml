@@ -50,5 +50,5 @@ services:
     volumes:
     - /var/run/docker.sock:/var/run/docker.sock
     environment:
-      ADDITIONAL_SERVICES: 'composetemplates:rabbitmq-master-server,composetemplates:rabbitmq-worker-server2,composetemplates:rabbitmq-worker-server1'
+      ADDITIONAL_SERVICES: 'compose-templates:rabbitmq-master-server,compose-templates:rabbitmq-worker-server2,compose-templates:rabbitmq-worker-server1'
 
