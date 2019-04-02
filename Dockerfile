@@ -1,4 +1,4 @@
-FROM rabbitmq:3.7.9-management
+FROM rabbitmq:3.7.10-management
 
 ADD rabbitmq.conf /etc/rabbitmq/
 
