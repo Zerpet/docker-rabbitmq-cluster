@@ -12,7 +12,7 @@ services:
       # RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: '-rabbit log_levels [{connection,error}]'
       # ENABLE_RAM: 'false'
     hostname: rabbitmq-master-server
-    image: zerpetfakename/rabbitmq-cluster:3.7.16
+    image: zerpetfakename/rabbitmq-cluster:3.7.17
     ports:
     - 15672:15672
 
@@ -23,7 +23,7 @@ services:
       EXCLUDE_PORTS: '5671,25672,4369'
       TCP_PORTS: '5672'
     hostname: rabbitmq-worker-server1  # This must be the same as the node name
-    image: zerpetfakename/rabbitmq-cluster:3.7.16
+    image: zerpetfakename/rabbitmq-cluster:3.7.17
     ports:
     - 15673:15672
 
@@ -34,7 +34,7 @@ services:
       EXCLUDE_PORTS: '5671,25672,4369'
       TCP_PORTS: '5672'
     hostname: rabbitmq-worker-server2
-    image: zerpetfakename/rabbitmq-cluster:3.7.16
+    image: zerpetfakename/rabbitmq-cluster:3.7.17
     ports:
     - 15674:15672
 
