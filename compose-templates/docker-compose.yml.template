@@ -18,7 +18,7 @@ services:
     environment:
       CLUSTER_WITH: rabbit@rabbitmq-master-server
       RABBITMQ_ERLANG_COOKIE: secret
-    hostname: rabbitmq-worker-server  # This must be the same as the node name 
+    hostname: rabbitmq-worker-server  # This must be the same as the node name
     image: zerpetfakename/rabbitmq-cluster:3.7
     ports:
     - 5673:5672
@@ -32,4 +32,4 @@ services:
     image: zerpetfakename/rabbitmq-cluster:3.7
     ports:
     - 5674:5672
-    - 15674:15672   
+    - 15674:15672
