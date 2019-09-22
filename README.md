@@ -12,7 +12,7 @@ This table shows the Rabbit and Erlang versions in each Docker image:
 | Image version | Erlang version | RabbitMQ version |
 |---------------|----------------|------------------|
 | 3.6           | 19.2.1         | 3.6.15           |
-| 3.7           | 20.2.4         | 3.7.7            |
+| 3.7           | 22.1         | 3.7.18            |
 
 ## Environment variables reference
 
